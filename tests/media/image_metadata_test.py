@@ -1,4 +1,8 @@
+import io
+
 from pytest import fixture
+from PIL import Image
+from PIL.IptcImagePlugin import getiptcinfo
 from superdesk.media.image import (
     PhotoMetadata,
     PhotoMetadataMapping,
@@ -18,7 +22,7 @@ def image_binary() -> bytes:
         return f.read()
 
 
-def test_photo_metadata_read_write(image_binary) -> None:
+def test_picture_metadata_read_write(image_binary) -> None:
     metadata = read_metadata(image_binary)
     assert metadata == PhotoMetadata(
         Description="The Montreal Police logo is seen on a police car in Montreal on Wednesday, July 8, 2020. THE CANADIAN PRESS/Paul Chiasson",
@@ -58,6 +62,11 @@ def test_photo_metadata_read_write(image_binary) -> None:
 
     metadata = read_metadata(next_image)
     assert metadata == updated
+
+    image = Image.open(io.BytesIO(next_image))
+    iptc_info = getiptcinfo(image)
+    assert iptc_info is not None
+    assert iptc_info[(2, 120)].decode() == "description"
 
 
 def test_get_metadata_from_item() -> None:

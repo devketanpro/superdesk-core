@@ -16,18 +16,18 @@ install_requires = [
     "urllib3>=1.26,<3",
     "eve>=1.1.2,<=2.1.0",
     "eve-elastic>=7.4.0,<7.5.0",
-    "elasticsearch<7.14",  # we are using oss version on test server
+    "elasticsearch<7.18",  # we are using oss version on test server
     "flask>=1.1,<1.2",
     "flask-mail>=0.9,<0.11",
     "flask-script>=2.0.5,<3.0",
     "flask-babel>=1.0,<4.1",
     "arrow>=0.4,<=1.3.0",
     "pillow>=9.2,<10.5",
-    "bcrypt>=3.1.1,<4.2",
+    "bcrypt>=3.1.1,<4.3",
     "blinker>=1.3,<1.9",
     "celery[redis]>=5.2.7,<5.5",
     "cerberus>=1.3.2,<1.4",
-    "redis>=4.5.2,<5.1",
+    "redis>=4.5.2,<5.2",
     "kombu>=5.2.4,<5.5",
     "feedparser>=6.0.8,<6.1",
     "hachoir<=3.3.0",
@@ -39,7 +39,7 @@ install_requires = [
     "raven[flask]>=5.10,<7.0",
     "requests>=2.7.0,<3.0",
     "boto3>=1.26,<2.0",
-    "websockets>=10.3,<10.4",
+    "websockets>=10.3,<13.2",
     "PyYAML>=6.0.1",
     "lxml>=5.2.2,<5.3",
     "lxml_html_clean>=0.1.1,<0.3",
@@ -51,7 +51,7 @@ install_requires = [
     "unidecode>=0.04.21,<=1.3.8",
     "authlib>0.14,<0.15",
     "draftjs-exporter[lxml]<5.1",
-    "regex>=2020.7.14,<=2024.7.24",
+    "regex>=2020.7.14,<=2024.9.11",
     "flask-oidc-ex>=0.5.5,<0.7",
     # to be replaced by stdlib version when we use Python 3.8+
     "typing_extensions>=3.7.4",
@@ -89,7 +89,7 @@ package_data = {
 
 setup(
     name="Superdesk-Core",
-    version="2.8.0.dev",
+    version="2.9.0.dev",
     description="Superdesk Core library",
     long_description=LONG_DESCRIPTION,
     author="petr jasek",
@@ -105,6 +105,7 @@ setup(
     extras_require={
         "exiv2": ["pyexiv2>=2.12.0,<2.15"],
     },
+    python_requires=">=3.8",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",

@@ -4857,7 +4857,7 @@ Feature: Content Publishing
     Scenario: We update picture metadata on publish
       Given config update
       """
-      {"PHOTO_METADATA_MAPPING": {"slugline": "Title", "extra.transref": "JobId"}}
+      {"PICTURE_METADATA_MAPPING": {"slugline": "Title", "extra.transref": "JobId"}}
       """
       And "desks"
         """
@@ -4882,4 +4882,70 @@ Feature: Content Publishing
       And we get picture metadata "{{ items.0.renditions.original.media }}"
       """
       {"JobId": "1234", "Title": "test publish"}
+      """
+
+    @auth
+    Scenario: We update associated picture metadata on publish
+      Given "archive"
+      """
+      [
+        {
+          "_current_version": 1,
+          "type": "picture",
+          "guid": "picture",
+          "slugline": "picture",
+          "state": "fetched"
+        },
+        {
+          "guid": "story",
+          "type": "text",
+          "slugline": "story",
+          "headline": "story headline",
+          "state": "in_progress",
+          "associations": {
+            "picture": {
+              "_current_version": 1,
+              "guid": "picture",
+              "slugline": "picture",
+              "state": "fetched",
+              "type": "picture"
+            }
+          }
+        }
+      ]
+      """
+      And "desks"
+      """
+      [{"name": "Sports", "members":[{"user":"#CONTEXT_USER_ID#"}]}]
+      """
+      When we publish "story" with "publish" type and "published" state
+      """
+      {
+          "guid": "story",
+          "type": "text",
+          "slugline": "story",
+          "state": "in_progress",
+          "headline": "story headline",
+          "associations": {
+            "picture": {
+              "_id": "picture",
+              "_current_version": 1,
+              "guid": "picture",
+              "slugline": "updated slugline",
+              "type": "picture",
+              "state": "fetched"
+            }
+          }
+      }
+      """
+      Then we get OK response
+      When we get "/published"
+      Then we get list with 2 items
+      """
+      {
+        "_items": [
+          {"_id": "picture", "slugline": "updated slugline"},
+          {"_id": "story", "associations": {"picture": {"slugline": "updated slugline"}}}
+        ]
+      }
       """
